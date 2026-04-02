@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const initialForm = { name: '', email: '', password: '' };
 
-const AuthForm = ({ mode = 'login', onSubmit, loading, error, onToggleMode }) => {
+const AuthForm = ({ mode = 'login', onSubmit, loading, error, connectivityMessage, onToggleMode }) => {
   const [form, setForm] = useState(initialForm);
 
   const handleChange = (event) => {
@@ -33,13 +33,14 @@ const AuthForm = ({ mode = 'login', onSubmit, loading, error, onToggleMode }) =>
           required
           minLength={6}
         />
+        {connectivityMessage ? <p className="error">{connectivityMessage}</p> : null}
         {error ? <p className="error">{error}</p> : null}
-        <button className="btn primary" disabled={loading} type="submit">
+        <button className="btn primary" disabled={loading} type="submit" aria-busy={loading}>
           {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Register'}
         </button>
       </form>
 
-      <button className="btn ghost" onClick={onToggleMode} type="button">
+      <button className="btn ghost" onClick={onToggleMode} type="button" disabled={loading}>
         {mode === 'login' ? 'New user? Register' : 'Already have an account? Login'}
       </button>
     </div>
